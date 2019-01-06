@@ -43,27 +43,6 @@ class Board extends React.Component {
 			returnJSX.push(<div className="board-row">{squares}</div>);
 		}
 		return <div>{returnJSX}</div>;		
-/*
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    ); */
-
   }
 }
 
@@ -75,7 +54,10 @@ class Game extends React.Component {
 				squares: Array(9).fill(null)
 			}],
 			stepNumber: 0,
-			xIsNext: true
+			xIsNext: true,
+			actions: [
+				null
+			],
 		}
 	}
 
@@ -83,6 +65,7 @@ class Game extends React.Component {
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
+		const actions = this.state.actions.slice();
 		if (calculateWinner(squares) || squares[i])
 			return;
 		squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -92,6 +75,7 @@ class Game extends React.Component {
 			}]),
 			stepNumber: history.length,
 			xIsNext: !this.state.xIsNext,
+			actions: actions.concat(i),
 		});
 	}
 
@@ -108,14 +92,16 @@ class Game extends React.Component {
 		const winningSquares = calculateWinner(current.squares);
 		const winner = winningSquares ? current.squares[0] : null;
 		const draw = isDraw(current.squares);
+		const actions = this.state.actions;
 
 		const moves = history.map((step, move) => {
+			const action = actions[move];
 			const desc = move ? 
 				'Go to move #' + move:
 				'Go to game start';
 			return (
 				<li key={move}>
-					<button onClick={() => this.jumpTo(move)}>{desc}</button>
+					<button onClick={() => this.jumpTo(move)}>{action} {desc}</button>
 				</li>
 			);
 		});
@@ -178,4 +164,12 @@ function calculateWinner(squares) {
 			return [a, b, c];
 	}
 	return null;
+}
+
+function oneToTwoDims(val) {
+	return val ? [Math.floor(val / 3), val % 3] : null;
+}
+
+function fmtAction(action) {
+	return action ? "(" + action[0] + ", " + action[1] + ") " : null;
 }
