@@ -65,7 +65,7 @@ class Game extends React.Component {
 		const history = this.state.history.slice(0, this.state.stepNumber + 1);
 		const current = history[history.length - 1];
 		const squares = current.squares.slice();
-		const actions = this.state.actions.slice();
+		const actions = this.state.actions.slice(0, this.state.stepNumber + 1);
 		if (calculateWinner(squares) || squares[i])
 			return;
 		squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -95,7 +95,7 @@ class Game extends React.Component {
 		const actions = this.state.actions;
 
 		const moves = history.map((step, move) => {
-			const action = actions[move];
+			const action = fmtAction(oneToTwoDims(actions[move]));
 			const desc = move ? 
 				'Go to move #' + move:
 				'Go to game start';
@@ -167,9 +167,9 @@ function calculateWinner(squares) {
 }
 
 function oneToTwoDims(val) {
-	return val ? [Math.floor(val / 3), val % 3] : null;
+	return val != null ? [Math.floor(val / 3), val % 3] : null;
 }
 
 function fmtAction(action) {
-	return action ? "(" + action[0] + ", " + action[1] + ") " : null;
+	return action != null ? "(" + action[0] + ", " + action[1] + ") " : null;
 }
