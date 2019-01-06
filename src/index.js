@@ -49,7 +49,7 @@ class Board extends React.Component {
 function Order(props) {
 	const desc = props.ascending ? "Ascending" : "Descending";
 	return (
-		<button className="order">{desc}</button>
+		<button className="order" onClick={props.handleClick}>{desc}</button>
 	)
 }
 
@@ -94,6 +94,12 @@ class Game extends React.Component {
 		});
 	}
 
+	handleOrderClick() {
+		this.setState({
+			ascending: !this.state.ascending
+		});
+	}
+
   render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
@@ -101,6 +107,7 @@ class Game extends React.Component {
 		const winner = winningSquares ? current.squares[0] : null;
 		const draw = isDraw(current.squares);
 		const actions = this.state.actions;
+		const ascending = this.state.ascending;
 
 		const moves = history.map((step, move) => {
 			const action = fmtAction(oneToTwoDims(actions[move]));
@@ -114,6 +121,7 @@ class Game extends React.Component {
 				</li>
 			);
 		});
+		const orderedMoves = ascending ? moves : moves.reverse();
 
 		let status;
 		if (winner)
@@ -133,9 +141,9 @@ class Game extends React.Component {
 					/>
         </div>
         <div className="game-info">
-					<Order ascending={this.state.ascending}/>
+					<Order handleClick={(a) => this.handleOrderClick(a)} ascending={this.state.ascending}/>
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol>{orderedMoves}</ol>
         </div>
       </div>
     );
