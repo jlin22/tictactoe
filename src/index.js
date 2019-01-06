@@ -46,6 +46,13 @@ class Board extends React.Component {
   }
 }
 
+function Order(props) {
+	const desc = props.ascending ? "Ascending" : "Descending";
+	return (
+		<button className="order">{desc}</button>
+	)
+}
+
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
@@ -58,6 +65,7 @@ class Game extends React.Component {
 			actions: [
 				null
 			],
+			ascending: true,
 		}
 	}
 
@@ -125,6 +133,7 @@ class Game extends React.Component {
 					/>
         </div>
         <div className="game-info">
+					<Order ascending={this.state.ascending}/>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
