@@ -52,3 +52,7 @@ ol, ul {
 button {
 	font-family: Inconsolata, monospace;
 }
+
+.highlight {
+	background: blue;
+}

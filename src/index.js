@@ -89,7 +89,8 @@ class Game extends React.Component {
   render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
-		const winner = calculateWinner(current.squares);
+		const winningSquares = calculateWinner(current.squares);
+		const winner = winningSquares ? current.squares[0] : null;
 		const draw = isDraw(current.squares);
 
 		const moves = history.map((step, move) => {
@@ -157,7 +158,7 @@ function calculateWinner(squares) {
 	for (var i = 0; i < lines.length; i++) {
 		const [a, b, c] = lines[i];
 		if (squares[a] && squares[a] === squares[b] && squares[b] === squares[c])
-			return squares[a];
+			return [a, b, c];
 	}
 	return null;
 }
