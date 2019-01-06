@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
-	const winningColors = {backgroundColor: '#ccc'};
+	const winningColors = {backgroundColor: '#ff81dd'};
 	const otherColors = {};
 	const color = props.winning ? winningColors : otherColors
 	return (
@@ -34,6 +34,16 @@ class Board extends React.Component {
   }
 
   render() {
+		var returnJSX = []
+		for (var i = 0; i < 3; i++) {
+			var squares = [];
+			for (var j = 0; j < 3; j++) {
+				squares.push(this.renderSquare(3 * i + j));
+			}
+			returnJSX.push(<div className="board-row">{squares}</div>);
+		}
+		return <div>{returnJSX}</div>;		
+/*
     return (
       <div>
         <div className="board-row">
@@ -52,7 +62,8 @@ class Board extends React.Component {
           {this.renderSquare(8)}
         </div>
       </div>
-    );
+    ); */
+
   }
 }
 
