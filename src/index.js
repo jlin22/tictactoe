@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+	const winningColors = {backgroundColor: '#ccc'};
+	const otherColors = {};
+	const color = props.winning ? winningColors : otherColors
 	return (
-		<button className="square" onClick={props.onClick}>
+		<button style={color} className="square" onClick={props.onClick}>
 		{props.value}
 		</button>
 	);
@@ -21,10 +24,12 @@ class Board extends React.Component {
 	}
 
   renderSquare(i) {
+		const winning = this.props.winningSquares ? this.props.winningSquares.includes(i) : false
     return (
 		<Square 
 		value={this.props.squares[i]}
 		onClick={() => this.props.handleClick(i)}
+		winning={winning}
 		/>);
   }
 
@@ -118,6 +123,7 @@ class Game extends React.Component {
           <Board 
 						squares={current.squares}
 						handleClick={(i) => this.handleClick(i)}
+						winningSquares={winningSquares}
 					/>
         </div>
         <div className="game-info">
